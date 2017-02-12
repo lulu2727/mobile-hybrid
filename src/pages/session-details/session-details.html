@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Session</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <h2>{{ session.title }}</h2>
+  <p>{{ session.desc }}</p>
+  <ion-list>
+    <button ion-item *ngFor="let speaker of speakers" (click)="goToSpeakerDetails(speaker)">
+      <ion-avatar item-left>
+        <img src="assets/images/{{speaker.image}}">
+      </ion-avatar>
+      <h2>{{ speaker.lastname }} {{ speaker.firstname }}</h2>
+    </button>
+  </ion-list>
+  <button ion-button (click)="goToNotes(session)" >Mes Notes</button>
+</ion-content>

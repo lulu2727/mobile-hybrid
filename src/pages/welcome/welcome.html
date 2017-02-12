@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button end menuToggle>
+      <ion-icon name="menu"></ion-icon> 
+    </button>
+    <ion-title>
+      Conférence
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-img width="330" height="139" src="assets/images/devfest2016_logo.jpg"></ion-img>     
+  <h2>Conférence</h2>
+  <ion-label>10 Février - 16 Février</ion-label>
+  <button ion-button (click)="goToSessions()" >Voir les sessions</button>
+  <button ion-button (click)="goToSpeakers()">Voir les présentateurs</button>
+</ion-content>

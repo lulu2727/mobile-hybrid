@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button end menuToggle>
+      <ion-icon name="menu"></ion-icon> 
+    </button>
+    <ion-title>
+      Présentateurs
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+    <button ion-item *ngFor="let speaker of speakers" (click)="goToSpeakerDetails(speaker)">
+      <h2>{{ speaker.lastname }} {{ speaker.firstname }}</h2>
+    </button>
+  </ion-list>
+</ion-content>
