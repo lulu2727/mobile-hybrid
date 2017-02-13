@@ -8,5 +8,5 @@
 <ion-content padding>
   <h2>{{ session.title }}</h2>
   <button ion-button (click)="saveNote()" >Enregistrer</button>
-  <ion-textarea [(ngModel)]="note" rows="12"></ion-textarea>
+  <ion-textarea [(ngModel)]="note.comment" rows="12"></ion-textarea>
 </ion-content>

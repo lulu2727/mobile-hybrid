@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 
 import { Platform, MenuController, Nav } from 'ionic-angular';
 
-import { StatusBar, Splashscreen } from 'ionic-native';
+import { StatusBar, Splashscreen, SQLite } from 'ionic-native';
 
 import { UsersPage } from '../pages/users/users';
 import { SessionsPage } from '../pages/sessions/sessions';
@@ -34,6 +34,24 @@ export class MyApp {
       { title: 'Présentateurs', component: SpeakersPage }, 
       { title: 'A propos du téléphone', component: AboutPage }                     
     ];
+
+    platform.ready().then(() => {
+      StatusBar.styleDefault();
+      let db = new SQLite();
+      db.openDatabase({
+        name: "data.db",
+        location: "default"
+      }).then(() => {
+        db.executeSql("CREATE TABLE IF NOT EXISTS NOTE (id integer primary key autoincrement, comment text, sessionId text)", {}).then((data) => {
+          console.log("Table Notes initialisée: ", data);
+        }, (error) => {
+          console.error("Impossible de créer la table NOTES", error);
+        })
+      }, (error) => {
+        console.error("Impossible d'ouvrir la base de données SQLite", error);
+      });
+    });
+
   }
 
   initializeApp() {
