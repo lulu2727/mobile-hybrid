@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 
 import { Session } from '../../models/session';
 
@@ -17,11 +17,10 @@ export class SessionsPage {
   constructor(public navCtrl: NavController, private sessionsProvider: SessionsProvider) {
     sessionsProvider.load().subscribe(sessions => {
       this.sessions = sessions;
-      console.log(sessions)
-    })
+    });
   }
 
-  goToSessionDetails(session: Object) {
+  goToSessionDetails(session: Session) {
     this.navCtrl.push(SessionDetailsPage, {session});
   }
 

@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button end menuToggle>
+      <ion-icon name="menu"></ion-icon> 
+    </button>
+    <ion-title>
+      Planning
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-item no-lines>
+    <ion-label> Uniquement les favoris</ion-label>
+    <ion-toggle [(ngModel)]="onlyFavorites"></ion-toggle>
+  </ion-item>
+  <ion-item no-lines>
+    <ion-label>Prochaines sessions</ion-label>
+    <button ion-button icon-only clear item-right (click)="findNextSessions()">
+      <ion-icon name="alert"></ion-icon>
+    </button>
+  </ion-item>
+  <ion-list #scheduleList>
+
+    <ion-item-group *ngFor="let hour of planning">
+
+      <ion-item-divider sticky>
+        <ion-label>
+          {{hour.time}}
+        </ion-label>
+      </ion-item-divider>
+
+      <ion-item no-lines *ngFor="let session of hour.sessions">
+          <button ion-item (click)="goToSessionDetails(session)" *ngIf="session.favorite || !onlyFavorites">
+            <h4>{{session.title}}</h4>
+            <p>{{session.confRoom}}</p>
+          </button>
+          <button ion-button icon-only clear item-right (click)="toggleFavorite(session)" *ngIf="session.favorite || !onlyFavorites">
+            <ion-icon [name]="session.favorite ? 'heart' : 'heart-outline'" ></ion-icon>
+          </button>
+      </ion-item>
+    </ion-item-group>
+  </ion-list>
+</ion-content>

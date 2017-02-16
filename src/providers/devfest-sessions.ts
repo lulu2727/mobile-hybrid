@@ -7,11 +7,13 @@ import { Session } from '../models/session';
 
 @Injectable()
 export class SessionsProvider {
-  sessionUrl = 'assets/json/devfest-2015.json';
+  sessionUrl : string = 'assets/json/devfest-2015.json';
+  test : Object;
 
   constructor(public http: Http) { }
 
   load(): Observable<Session[]> {
+    
     return this.http.get(`${this.sessionUrl}`)
       .map(res => <Session[]>res.json().sessions);
   }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Device, Network, InAppBrowser } from 'ionic-native';
+import { InAppBrowser } from 'ionic-native';
 import { NavController } from 'ionic-angular';
 
 @Component({

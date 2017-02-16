@@ -10,4 +10,5 @@ export interface Session {
   video: string;
   slides: string;
   speakers: string[];
+  favorite : boolean;
 }

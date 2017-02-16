@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Platform } from 'ionic-angular';
+import { SQLite } from "ionic-native";
 
 import { Session } from '../../models/session';
 import { Speaker } from '../../models/speaker';
@@ -16,8 +17,10 @@ import { NotesPage } from '../notes/notes';
 export class SessionDetailsPage {
   session: Session;
   speakers: Speaker[];
+  database: SQLite;
+  favorite : boolean = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private speakersProvider: SpeakersProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private speakersProvider: SpeakersProvider, private platform: Platform) {
     this.session = navParams.get('session');
     this.speakers = [];
 
@@ -26,6 +29,24 @@ export class SessionDetailsPage {
         this.speakers.push(speaker);
       });   
     }
+
+    this.platform.ready().then(() => {
+      this.database = new SQLite();
+      this.database.openDatabase({ name: "data.db", location: "default" }).then(() => {  
+      }, (error) => {
+        console.log("ERROR: ", error);
+      });
+    });
+  }
+
+  toggleFavorite(){
+    if(this.favorite){
+      this.removeToFavorites()
+    }
+    else{
+      this.addToFavorites()
+    }   
+    this.favorite = !this.favorite; 
   }
 
   goToSpeakerDetails(speaker: Object) {
@@ -35,5 +56,21 @@ export class SessionDetailsPage {
   goToNotes(session: Object) {
     this.navCtrl.push(NotesPage, {session});
   }  
+
+  addToFavorites() {
+      this.database.executeSql("INSERT INTO FAVORITE (sessionId) VALUES (?)", [this.session.id]).then((data) => {
+        console.log("Favori crée: " + JSON.stringify(data));
+      }, (error) => {
+        console.log("Erreur lors de la création d'un favori : " + JSON.stringify(error));
+      });
+  }  
+
+  removeToFavorites() {
+      this.database.executeSql("DELETE FROM FAVORITE WHERE sessionId = ?", [this.session.id]).then((data) => {
+        console.log("Favori supprimé: " + JSON.stringify(data));
+      }, (error) => {
+        console.log("Erreur lors de la suppression d'un favori : " + JSON.stringify(error));
+      });
+  }    
 
 }

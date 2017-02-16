@@ -2,14 +2,14 @@ import { Component, ViewChild } from '@angular/core';
 
 import { Platform, MenuController, Nav } from 'ionic-angular';
 
-import { StatusBar, Splashscreen, SQLite } from 'ionic-native';
+import { StatusBar, Splashscreen, SQLite, DeviceMotion } from 'ionic-native';
 
-import { UsersPage } from '../pages/users/users';
 import { SessionsPage } from '../pages/sessions/sessions';
 import { SpeakersPage } from '../pages/speakers/speakers';
 import { WelcomePage } from '../pages/welcome/welcome';
 import { AboutPage } from '../pages/about/about';
 import { PhonePage } from '../pages/phone/phone';
+import { SchedulePage } from '../pages/schedule/schedule';
 
 
 @Component({
@@ -18,8 +18,9 @@ import { PhonePage } from '../pages/phone/phone';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-private createImages = "CREATE TABLE IF NOT EXISTS IMAGE (id integer primary key autoincrement, data text, sessionID text)";
-private createNotes = "CREATE TABLE IF NOT EXISTS NOTE (id integer primary key autoincrement, comment text, sessionId text)"
+  private createImages = "CREATE TABLE IF NOT EXISTS IMAGE (id integer primary key autoincrement, data text, sessionID text)";
+  private createNotes = "CREATE TABLE IF NOT EXISTS NOTE (id integer primary key autoincrement, comment text, sessionId text)";
+  private createFavorites = "CREATE TABLE IF NOT EXISTS FAVORITE (id integer primary key autoincrement, sessionId text)";
 
   // make HelloIonicPage the root (or first) page
   rootPage: any = WelcomePage;
@@ -36,6 +37,7 @@ private createNotes = "CREATE TABLE IF NOT EXISTS NOTE (id integer primary key a
       { title: 'Accueil', component: WelcomePage },
       { title: 'Sessions', component: SessionsPage },
       { title: 'Présentateurs', component: SpeakersPage }, 
+      { title: 'Planning', component: SchedulePage },       
       { title: 'Mon téléphone', component: PhonePage },   
       { title: 'A propos', component: AboutPage }                             
     ];
@@ -57,6 +59,11 @@ private createNotes = "CREATE TABLE IF NOT EXISTS NOTE (id integer primary key a
         }, (error) => {
           console.error("Impossible de créer la table IMAGE", error);
         });
+        db.executeSql(this.createFavorites, {}).then((data) => {
+          console.log("Table FAVORITE initialisée: ", data);
+        }, (error) => {
+          console.error("Impossible de créer la table FAVORITE", error);
+        });        
       }, (error) => {
         console.error("Impossible d'ouvrir la base de données SQLite", error);
       });

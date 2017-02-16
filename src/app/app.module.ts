@@ -1,33 +1,32 @@
-import { NgModule, ErrorHandler } from '@angular/core';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { NgModule } from '@angular/core';
+import { IonicApp, IonicModule } from 'ionic-angular';
 import { MyApp } from './app.component';
-import { UsersPage } from '../pages/users/users';
 import { SessionsPage } from '../pages/sessions/sessions';
 import { SpeakersPage } from '../pages/speakers/speakers';
 import { WelcomePage } from '../pages/welcome/welcome';
 import { AboutPage } from '../pages/about/about';
+import { PhonePage } from '../pages/phone/phone';
 import { NotesPage } from '../pages/notes/notes';
+import { SchedulePage } from '../pages/schedule/schedule';
 import { SpeakerDetailsPage } from '../pages/speaker-details/speaker-details';
 import { SessionDetailsPage } from '../pages/session-details/session-details';
 
-import { GithubUsers } from '../providers/github-users';
 import { SpeakersProvider } from '../providers/devfest-speakers';
 import { SessionsProvider } from '../providers/devfest-sessions';
-
-import {UserDetailsPage } from '../pages/user-details/user-details';
+import { HoursProvider } from '../providers/devfest-hours';
 
 @NgModule({
   declarations: [
     MyApp,
-    UsersPage,
     SessionsPage,
     SpeakersPage,
     SpeakerDetailsPage,
     SessionDetailsPage,
     WelcomePage,
-    UserDetailsPage,
     AboutPage,
-    NotesPage
+    NotesPage,
+    PhonePage,
+    SchedulePage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -35,16 +34,16 @@ import {UserDetailsPage } from '../pages/user-details/user-details';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    UsersPage,
     SessionsPage,
     SpeakersPage,
     SpeakerDetailsPage,
     SessionDetailsPage,
     WelcomePage,
-    UserDetailsPage,
     AboutPage,
-    NotesPage    
+    NotesPage,
+    PhonePage,
+    SchedulePage   
   ],
-  providers: [GithubUsers, SpeakersProvider, SessionsProvider]
+  providers: [SpeakersProvider, SessionsProvider, HoursProvider]
 })
 export class AppModule {}

@@ -8,6 +8,10 @@
 <ion-content padding>
   <h2>{{ session.title }}</h2>
   <p>{{ session.desc }}</p>
+  <!--<button (click)="toggleFavorite()">
+    <ion-icon [name]="favorite ? 'heart' : 'heart-outline'"></ion-icon>
+  </button>-->
+  <ion-label *ngIf="speakers">Présentateurs</ion-label>  
   <ion-list>
     <button ion-item *ngFor="let speaker of speakers" (click)="goToSpeakerDetails(speaker)">
       <ion-avatar item-left>

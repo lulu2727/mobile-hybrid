@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, Platform } from 'ionic-angular';
-import {SQLite, Camera} from "ionic-native";
+import { SQLite, Camera, ActionSheet, SocialSharing } from "ionic-native";
 
 import { Session } from '../../models/session';
 import { Note } from '../../models/note';
@@ -25,7 +25,6 @@ export class NotesPage {
     this.platform.ready().then(() => {
       this.database = new SQLite();
       this.database.openDatabase({ name: "data.db", location: "default" }).then(() => {
-        console.log("opened");
         this.loadNote();
         this.loadImages();        
       }, (error) => {
@@ -45,10 +44,26 @@ export class NotesPage {
     });
   }
 
+  onImageClick(image : string, added : boolean) {
+    let buttonLabels = ['Supprimer', 'Partager'];
+    ActionSheet.show({
+      'title': 'Que faire avec l\'image ?',
+      'buttonLabels': buttonLabels,
+      androidEnableCancelButton : true,
+      'addCancelButtonWithLabel': 'Annuler'
+    }).then((buttonIndex: number) => {
+      if (buttonIndex === 1) {
+        this.deleteImage(image, added);
+      }
+      else if (buttonIndex === 2) {
+        this.shareImage(image);
+      }
+    });
+  }
+
   loadImages() {
     this.database.executeSql("SELECT * FROM IMAGE WHERE sessionId = ?", [this.session.id]).then((data) => {
       for(let i = 0; i < data.rows.length; i++){
-        console.log(data.rows.item(i));
         this.savedImages.push(data.rows.item(i).data);
       }
     }, (error) => {
@@ -56,6 +71,35 @@ export class NotesPage {
     });
   }
 
+  deleteImage(image : string, added : boolean) {
+    if(!added){
+      var index = this.newImages.indexOf(image, 0);
+      if (index > -1) {
+        this.newImages.splice(index, 1);
+      }
+    }
+    else{
+      var index = this.savedImages.indexOf(image, 0);
+      if (index > -1) {
+        this.savedImages.splice(index, 1);
+      }
+    }
+
+    this.database.executeSql("DELETE FROM IMAGE WHERE data = ? AND sessionId = ?", [image, this.note.sessionId]).then((data) => {
+      console.log("Image supprimée: " + JSON.stringify(data));
+    }, (error) => {
+      console.log("Erreur lors de la suppression d'une image : " + JSON.stringify(error));
+    });
+  }
+
+  shareImage(image : string) {
+    SocialSharing.share(this.note.comment, this.note.sessionId, null, "").then(()=>{
+
+      },
+      (err)=>{
+         console.log(err)
+      })
+  }
 
   saveNote() {
     this.saveImages();
@@ -82,7 +126,6 @@ export class NotesPage {
     //Enregistrement des nouvelles images
 
     for(let image of this.newImages){
-      console.log(image)
       this.database.executeSql("INSERT INTO IMAGE (data, sessionId) VALUES (?, ?)", [image, this.note.sessionId]).then((data) => {
         console.log("Image crée: " + JSON.stringify(data));
       }, (error) => {
@@ -109,7 +152,6 @@ export class NotesPage {
         sourceType : Camera.PictureSourceType.PHOTOLIBRARY
     }).then((imageData) => {
         this.newImages.push("data:image/jpeg;base64," + imageData);
-        console.log(this.newImages);
     }, (err) => {
         console.log(err);
     });

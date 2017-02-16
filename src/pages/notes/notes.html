@@ -7,14 +7,17 @@
 
 <ion-content padding>
   <h2>{{ session.title }}</h2>
-  <button (click)="takePicture()">
+  <button ion-button icon-only clear (click)="takePicture()">
     <ion-icon name="camera"></ion-icon>
   </button>
-  <button (click)="retrieveImageFromGallery()">
+  <button ion-button icon-only clear (click)="retrieveImageFromGallery()">
     <ion-icon name="folder-open"></ion-icon>
   </button>
+  <ion-item>
+    <ion-label stacked>Notes</ion-label>
+    <ion-textarea [(ngModel)]="note.comment" rows="8"></ion-textarea>
+  </ion-item>
+  <img (click)="onImageClick(image, true)" *ngFor="let image of savedImages" [src]="image"/>
+  <img (click)="onImageClick(image, false)" *ngFor="let image of newImages" [src]="image"/>  
   <button ion-button block (click)="saveNote()" >Enregistrer</button>
-  <ion-textarea [(ngModel)]="note.comment" rows="12"></ion-textarea>
-  <img *ngFor="let image of savedImages" [src]="image"/>
-  <img *ngFor="let image of newImages" [src]="image"/>  
 </ion-content>

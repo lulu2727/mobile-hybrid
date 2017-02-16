@@ -12,8 +12,8 @@
 
 <ion-content padding>
   <ion-list>
-    <button ion-item *ngFor="let session of sessions" (click)="goToSessionDetails(session)">
-      <h2>{{ session.title }}</h2>
+    <button details-push ion-item *ngFor="let session of sessions" (click)="goToSessionDetails(session)">
+      <h2 text-wrap>{{ session.title }}</h2>
     </button>
   </ion-list>
 </ion-content>
