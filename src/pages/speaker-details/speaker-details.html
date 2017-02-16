@@ -9,6 +9,7 @@
 
 <ion-content padding>
   <h2>{{ speaker.lastname }} {{ speaker.firstname }}</h2>
+  <button ion-button block (click)="saveInContact()" >Enregistrer dans les contacts</button>  
   <ion-img width="330" height="330" src="assets/images/{{speaker.image}}"></ion-img>   
   <a ion-item detail-none *ngFor="let social of speaker.socials" href="{{social.link}}">{{social.class}} </a>
   <ion-label>Ses présentations</ion-label>

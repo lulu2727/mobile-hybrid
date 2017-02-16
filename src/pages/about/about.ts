@@ -1,35 +1,22 @@
 import { Component } from '@angular/core';
-import { Device, Network } from 'ionic-native';
-import { NavController, NavParams } from 'ionic-angular';
+import { Device, Network, InAppBrowser } from 'ionic-native';
+import { NavController } from 'ionic-angular';
 
-/*
-  Generated class for the About page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
 @Component({
   selector: 'page-about',
   templateUrl: 'about.html'
 })
 export class AboutPage {
-  platform: string;
-  model: string;
-  version: string;
-  uuid: string;  
-  network: string;    
+  description: string = "Cette application est le résultat du module Programmation multiplateforme à l'école des Mines de Nantes de la promotion FIL 2017";
+  version: string = "0.0.1";
+  author: string = "Ludovic Sinquin";
+  authorUrl : string = "http://fr.viadeo.com/fr/profile/ludovic.sinquin";
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.platform = Device.platform;
-    this.model = Device.model;
-    this.version = Device.version;
-    this.uuid = Device.uuid;
-
-    this.network = Network.type;
+  constructor(public navCtrl: NavController) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad AboutPage');
+  gotoDetails() {
+    console.log('hello');
+    open(this.authorUrl, "_blank", "location=no");
   }
-
 }

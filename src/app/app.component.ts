@@ -9,6 +9,7 @@ import { SessionsPage } from '../pages/sessions/sessions';
 import { SpeakersPage } from '../pages/speakers/speakers';
 import { WelcomePage } from '../pages/welcome/welcome';
 import { AboutPage } from '../pages/about/about';
+import { PhonePage } from '../pages/phone/phone';
 
 
 @Component({
@@ -16,6 +17,9 @@ import { AboutPage } from '../pages/about/about';
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
+
+private createImages = "CREATE TABLE IF NOT EXISTS IMAGE (id integer primary key autoincrement, data text, sessionID text)";
+private createNotes = "CREATE TABLE IF NOT EXISTS NOTE (id integer primary key autoincrement, comment text, sessionId text)"
 
   // make HelloIonicPage the root (or first) page
   rootPage: any = WelcomePage;
@@ -32,7 +36,8 @@ export class MyApp {
       { title: 'Accueil', component: WelcomePage },
       { title: 'Sessions', component: SessionsPage },
       { title: 'Présentateurs', component: SpeakersPage }, 
-      { title: 'A propos du téléphone', component: AboutPage }                     
+      { title: 'Mon téléphone', component: PhonePage },   
+      { title: 'A propos', component: AboutPage }                             
     ];
 
     platform.ready().then(() => {
@@ -42,11 +47,16 @@ export class MyApp {
         name: "data.db",
         location: "default"
       }).then(() => {
-        db.executeSql("CREATE TABLE IF NOT EXISTS NOTE (id integer primary key autoincrement, comment text, sessionId text)", {}).then((data) => {
-          console.log("Table Notes initialisée: ", data);
+        db.executeSql(this.createNotes, {}).then((data) => {
+          console.log("Table NOTE initialisée: ", data);
         }, (error) => {
-          console.error("Impossible de créer la table NOTES", error);
-        })
+          console.error("Impossible de créer la table NOTE", error);
+        });
+        db.executeSql(this.createImages, {}).then((data) => {
+          console.log("Table IMAGE initialisée: ", data);
+        }, (error) => {
+          console.error("Impossible de créer la table IMAGE", error);
+        });
       }, (error) => {
         console.error("Impossible d'ouvrir la base de données SQLite", error);
       });
